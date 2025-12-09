@@ -39,10 +39,10 @@ export default function Recommendation() {
   }, []);
 
   const weather = {
-    temp: 8,
-    feelsLike: 4,
+    temp: 46,
+    feelsLike: 39,
     condition: "Overcast",
-    wind: 18,
+    wind: 11,
     humidity: 65,
     precip: "10%",
   };
@@ -74,14 +74,14 @@ export default function Recommendation() {
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
         <div>
           <h1 className="text-3xl font-heading font-bold text-primary">Your Run Forecast</h1>
-          <p className="text-muted-foreground">Central Park • Today, 2:00 PM</p>
+          <p className="text-muted-foreground">Central Park • Today, 2:00 PM • 1h 30m</p>
         </div>
         <div className="flex gap-2">
-          <Button variant="outline" size="sm" onClick={handleSave}>
+          <Button variant="outline" size="sm" className="bg-black text-white hover:bg-black/90 hover:text-white border-black" onClick={handleSave}>
             <Save className="h-4 w-4 mr-2" />
-            Save Outfit
+            Let's Go!
           </Button>
-          <Button size="sm" className="bg-primary text-white" onClick={handleLogRun}>
+          <Button size="sm" className="bg-black text-white hover:bg-black/90" onClick={handleLogRun}>
             Log Workout
             <ArrowRight className="h-4 w-4 ml-2" />
           </Button>
@@ -100,7 +100,7 @@ export default function Recommendation() {
                 <Cloud className="h-8 w-8 text-primary" />
               </div>
               <div>
-                <div className="text-3xl font-bold font-heading">{weather.temp}°C</div>
+                <div className="text-3xl font-bold font-heading">{weather.temp}°F</div>
                 <div className="text-muted-foreground font-medium">{weather.condition}</div>
               </div>
             </div>
@@ -108,7 +108,7 @@ export default function Recommendation() {
             <div className="flex gap-6 text-sm">
               <div className="flex flex-col items-center">
                 <span className="text-muted-foreground flex items-center gap-1"><Wind className="h-3 w-3" /> Wind</span>
-                <span className="font-bold text-primary">{weather.wind} km/h</span>
+                <span className="font-bold text-primary">{weather.wind} mph</span>
               </div>
               <div className="flex flex-col items-center">
                 <span className="text-muted-foreground flex items-center gap-1"><Droplets className="h-3 w-3" /> Humidity</span>
@@ -116,7 +116,7 @@ export default function Recommendation() {
               </div>
               <div className="flex flex-col items-center">
                 <span className="text-muted-foreground flex items-center gap-1"><Thermometer className="h-3 w-3" /> Feels Like</span>
-                <span className="font-bold text-primary">{weather.feelsLike}°C</span>
+                <span className="font-bold text-primary">{weather.feelsLike}°F</span>
               </div>
             </div>
           </div>
@@ -138,7 +138,7 @@ export default function Recommendation() {
 
               <Dialog>
                 <DialogTrigger asChild>
-                  <Button variant="outline" size="sm">
+                  <Button variant="outline" size="sm" className="bg-black text-white hover:bg-black/90 hover:text-white border-black">
                     <Plus className="h-4 w-4 mr-2" />
                     Add Item
                   </Button>
@@ -256,7 +256,7 @@ export default function Recommendation() {
                   </div>
                 </AccordionTrigger>
                 <AccordionContent className="text-muted-foreground text-sm">
-                  Wind speeds of 18km/h significantly lower skin temperature. A windbreaker shell is essential to trap body heat.
+                  Wind speeds of 11 mph significantly lower skin temperature. A windbreaker shell is essential to trap body heat.
                 </AccordionContent>
               </AccordionItem>
               
@@ -268,7 +268,7 @@ export default function Recommendation() {
                   </div>
                 </AccordionTrigger>
                 <AccordionContent className="text-muted-foreground text-sm">
-                  At 8°C with moderate exertion, you'll generate significant body heat. We recommend lighter layers than you'd wear for walking.
+                  At 46°F with moderate exertion, you'll generate significant body heat. We recommend lighter layers than you'd wear for walking.
                 </AccordionContent>
               </AccordionItem>
             </Accordion>
