@@ -25,11 +25,13 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Checkbox } from "@/components/ui/checkbox";
+import { useToast } from "@/hooks/use-toast";
 import { INITIAL_RECOMMENDATION, GEAR_CLOSET, GearItem } from "@/lib/data";
 
 export default function Recommendation() {
   const [_, setLocation] = useLocation();
   const [selectedItems, setSelectedItems] = useState<GearItem[]>([]);
+  const { toast } = useToast();
   
   // Initialize with recommendation
   useEffect(() => {
@@ -53,7 +55,15 @@ export default function Recommendation() {
     }
   };
 
-  const handleSaveAndContinue = () => {
+  const handleSave = () => {
+    localStorage.setItem("savedOutfit", JSON.stringify(selectedItems));
+    toast({
+      title: "Outfit Saved",
+      description: "Your selection has been saved for later.",
+    });
+  };
+
+  const handleLogRun = () => {
     localStorage.setItem("savedOutfit", JSON.stringify(selectedItems));
     setLocation("/feedback");
   };
@@ -67,13 +77,13 @@ export default function Recommendation() {
           <p className="text-muted-foreground">Central Park • Today, 2:00 PM</p>
         </div>
         <div className="flex gap-2">
-          <Button variant="outline" size="sm">
-            <Share2 className="h-4 w-4 mr-2" />
-            Share
-          </Button>
-          <Button size="sm" className="bg-primary text-white" onClick={handleSaveAndContinue}>
+          <Button variant="outline" size="sm" onClick={handleSave}>
             <Save className="h-4 w-4 mr-2" />
-            Save & Log Run
+            Save Outfit
+          </Button>
+          <Button size="sm" className="bg-primary text-white" onClick={handleLogRun}>
+            Log Workout
+            <ArrowRight className="h-4 w-4 ml-2" />
           </Button>
         </div>
       </div>

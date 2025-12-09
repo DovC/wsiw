@@ -2,16 +2,25 @@ import { motion } from "framer-motion";
 
 interface BodyOutlineProps {
   zones: {
-    head: boolean;
-    torso: boolean;
-    legs: boolean;
-    feet: boolean;
+    head?: string;
+    torso?: string;
+    legs?: string;
+    feet?: string;
+    hands?: string;
   };
 }
 
 export default function BodyOutline({ zones }: BodyOutlineProps) {
-  const highlightColor = "#f97316"; // Orange-500
-  const defaultColor = "#e2e8f0"; // Slate-200
+  const getColor = (rating?: string) => {
+    switch (rating) {
+      case "hot": return "#ef4444"; // Red-500
+      case "perfect": return "#22c55e"; // Green-500
+      case "cold": return "#3b82f6"; // Blue-500
+      default: return "#ffffff"; // White
+    }
+  };
+
+  const getFill = (zone?: string) => getColor(zone);
 
   return (
     <div className="relative w-full h-full flex items-center justify-center py-4">
@@ -24,10 +33,10 @@ export default function BodyOutline({ zones }: BodyOutlineProps) {
         {/* Head */}
         <motion.path
           d="M100 20 C 115 20, 125 35, 125 50 C 125 65, 115 80, 100 80 C 85 80, 75 65, 75 50 C 75 35, 85 20, 100 20 Z"
-          fill={zones.head ? highlightColor : "white"}
+          fill={getFill(zones.head)}
           stroke="#1e293b"
           strokeWidth="3"
-          animate={{ fill: zones.head ? highlightColor : "white" }}
+          animate={{ fill: getFill(zones.head) }}
         />
         
         {/* Neck */}
@@ -40,16 +49,26 @@ export default function BodyOutline({ zones }: BodyOutlineProps) {
              L90 230 L110 230 
              L130 140 L140 230 L160 220 L150 120 
              L130 100 Z"
-          fill={zones.torso ? highlightColor : "white"}
+          fill={getFill(zones.torso)}
           stroke="#1e293b"
           strokeWidth="3"
           strokeLinejoin="round"
-          animate={{ fill: zones.torso ? highlightColor : "white" }}
+          animate={{ fill: getFill(zones.torso) }}
         />
 
         {/* Hands */}
-        <motion.circle cx="50" cy="235" r="10" fill="white" stroke="#1e293b" strokeWidth="3" />
-        <motion.circle cx="150" cy="235" r="10" fill="white" stroke="#1e293b" strokeWidth="3" />
+        <motion.circle 
+          cx="50" cy="235" r="10" 
+          fill={getFill(zones.hands)} 
+          stroke="#1e293b" strokeWidth="3" 
+          animate={{ fill: getFill(zones.hands) }}
+        />
+        <motion.circle 
+          cx="150" cy="235" r="10" 
+          fill={getFill(zones.hands)} 
+          stroke="#1e293b" strokeWidth="3" 
+          animate={{ fill: getFill(zones.hands) }}
+        />
 
 
         {/* Legs */}
@@ -58,27 +77,27 @@ export default function BodyOutline({ zones }: BodyOutlineProps) {
              L85 350 L80 420 L95 420 L100 300 
              L105 420 L120 420 L115 350 
              L110 230 Z"
-          fill={zones.legs ? highlightColor : "white"}
+          fill={getFill(zones.legs)}
           stroke="#1e293b"
           strokeWidth="3"
           strokeLinejoin="round"
-          animate={{ fill: zones.legs ? highlightColor : "white" }}
+          animate={{ fill: getFill(zones.legs) }}
         />
 
         {/* Feet */}
         <motion.path
           d="M80 420 L75 440 L95 440 L95 420 Z"
-          fill={zones.feet ? highlightColor : "white"}
+          fill={getFill(zones.feet)}
           stroke="#1e293b"
           strokeWidth="3"
-          animate={{ fill: zones.feet ? highlightColor : "white" }}
+          animate={{ fill: getFill(zones.feet) }}
         />
         <motion.path
           d="M105 420 L105 440 L125 440 L120 420 Z"
-          fill={zones.feet ? highlightColor : "white"}
+          fill={getFill(zones.feet)}
           stroke="#1e293b"
           strokeWidth="3"
-          animate={{ fill: zones.feet ? highlightColor : "white" }}
+          animate={{ fill: getFill(zones.feet) }}
         />
 
         {/* Guide Lines */}

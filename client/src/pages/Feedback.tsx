@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "wouter";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Trash2, Plus, Smile, Frown, Meh, Save, Check } from "lucide-react";
@@ -162,10 +162,11 @@ export default function Feedback() {
              {/* Body Map Visualization */}
              <div className="w-full max-w-[300px] h-[450px]">
                <BodyOutline zones={{
-                 head: !!feedback["Head"],
-                 torso: !!feedback["Torso"],
-                 legs: !!feedback["Legs"],
-                 feet: !!feedback["Feet"],
+                 head: feedback["Head"],
+                 torso: feedback["Torso"],
+                 legs: feedback["Legs"],
+                 feet: feedback["Feet"],
+                 hands: feedback["Hands"],
                }} />
              </div>
 
@@ -174,6 +175,7 @@ export default function Feedback() {
                {[
                  { id: "Head", label: "Head / Neck" },
                  { id: "Torso", label: "Torso / Arms" },
+                 { id: "Hands", label: "Hands" },
                  { id: "Legs", label: "Legs" },
                  { id: "Feet", label: "Feet" }
                ].map((zone) => (
