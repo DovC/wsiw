@@ -12,7 +12,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   const navItems = [
     { label: "Home", path: "/" },
     { label: "My Runs", path: "/history" },
-    { label: "Gear Closet", path: "/closet" },
+    { label: "Gear Closet", path: "/gear-closet" },
   ];
 
   return (

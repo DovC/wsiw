@@ -9,6 +9,7 @@ import Home from "@/pages/Home";
 import Onboarding from "@/pages/Onboarding";
 import Recommendation from "@/pages/Recommendation";
 import Feedback from "@/pages/Feedback";
+import GearCloset from "@/pages/GearCloset";
 
 function Router() {
   return (
@@ -18,6 +19,7 @@ function Router() {
         <Route path="/onboarding" component={Onboarding}/>
         <Route path="/recommendation" component={Recommendation}/>
         <Route path="/feedback" component={Feedback}/>
+        <Route path="/gear-closet" component={GearCloset}/>
         <Route component={NotFound} />
       </Switch>
     </Layout>
