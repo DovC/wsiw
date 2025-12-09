@@ -46,9 +46,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           </nav>
 
           <div className="flex items-center gap-4">
-            <Button variant="ghost" size="icon" className="hidden md:flex">
-              <User className="h-5 w-5" />
-            </Button>
+            <Link href="/profile">
+              <Button variant="ghost" size="icon" className="hidden md:flex">
+                <User className="h-5 w-5" />
+              </Button>
+            </Link>
             
             {/* Mobile Menu */}
             <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>

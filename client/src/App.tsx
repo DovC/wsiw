@@ -11,6 +11,7 @@ import Recommendation from "@/pages/Recommendation";
 import Feedback from "@/pages/Feedback";
 import GearCloset from "@/pages/GearCloset";
 import MyWorkouts from "@/pages/MyWorkouts";
+import UserProfile from "@/pages/UserProfile";
 
 function Router() {
   return (
@@ -22,6 +23,7 @@ function Router() {
         <Route path="/feedback" component={Feedback}/>
         <Route path="/gear-closet" component={GearCloset}/>
         <Route path="/workouts" component={MyWorkouts}/>
+        <Route path="/profile" component={UserProfile}/>
         <Route component={NotFound} />
       </Switch>
     </Layout>
