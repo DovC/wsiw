@@ -1,8 +1,9 @@
-import { motion } from "framer-motion";
-import { Link } from "wouter";
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Link, useLocation } from "wouter";
 import { 
   Wind, Droplets, Thermometer, Cloud, 
-  Shirt, User, Info, ArrowRight, Share2 
+  Shirt, User, Info, ArrowRight, Share2, Plus, X, Check, Save 
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { 
@@ -16,8 +17,25 @@ import {
   TooltipContent, 
   TooltipTrigger 
 } from "@/components/ui/tooltip";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Checkbox } from "@/components/ui/checkbox";
+import { INITIAL_RECOMMENDATION, GEAR_CLOSET, GearItem } from "@/lib/data";
 
 export default function Recommendation() {
+  const [_, setLocation] = useLocation();
+  const [selectedItems, setSelectedItems] = useState<GearItem[]>([]);
+  
+  // Initialize with recommendation
+  useEffect(() => {
+    setSelectedItems(INITIAL_RECOMMENDATION.map(r => ({ ...r, reason: undefined })));
+  }, []);
+
   const weather = {
     temp: 8,
     feelsLike: 4,
@@ -27,36 +45,18 @@ export default function Recommendation() {
     precip: "10%",
   };
 
-  const outfit = [
-    {
-      zone: "Torso (Base)",
-      item: "Merino Wool Long Sleeve",
-      reason: "Moisture wicking, thermoregulation",
-      icon: <Shirt className="h-6 w-6" />,
-      color: "bg-stone-200"
-    },
-    {
-      zone: "Torso (Outer)",
-      item: "Lightweight Windbreaker",
-      reason: "Wind gusts > 15km/h",
-      icon: <Wind className="h-6 w-6" />,
-      color: "bg-orange-100 text-orange-600"
-    },
-    {
-      zone: "Legs",
-      item: "Thermal Tights",
-      reason: "Feels like 4°C",
-      icon: <User className="h-6 w-6" />,
-      color: "bg-slate-200"
-    },
-    {
-      zone: "Accessories",
-      item: "Light Gloves",
-      reason: "Extremity protection recommended",
-      icon: <User className="h-6 w-6" />,
-      color: "bg-blue-100 text-blue-600"
+  const handleToggleItem = (item: GearItem) => {
+    if (selectedItems.find(i => i.id === item.id)) {
+      setSelectedItems(prev => prev.filter(i => i.id !== item.id));
+    } else {
+      setSelectedItems(prev => [...prev, item]);
     }
-  ];
+  };
+
+  const handleSaveAndContinue = () => {
+    localStorage.setItem("savedOutfit", JSON.stringify(selectedItems));
+    setLocation("/feedback");
+  };
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-5xl">
@@ -71,12 +71,10 @@ export default function Recommendation() {
             <Share2 className="h-4 w-4 mr-2" />
             Share
           </Button>
-          <Link href="/feedback">
-            <Button size="sm" className="bg-primary text-white">
-              Log Run
-              <ArrowRight className="h-4 w-4 ml-2" />
-            </Button>
-          </Link>
+          <Button size="sm" className="bg-primary text-white" onClick={handleSaveAndContinue}>
+            <Save className="h-4 w-4 mr-2" />
+            Save & Log Run
+          </Button>
         </div>
       </div>
 
@@ -115,47 +113,121 @@ export default function Recommendation() {
 
           {/* Outfit Visualization */}
           <div className="space-y-4">
-            <h2 className="font-heading font-bold text-xl flex items-center gap-2">
-              Recommended Layers
-              <Tooltip>
-                <TooltipTrigger>
-                  <Info className="h-4 w-4 text-muted-foreground cursor-help" />
-                </TooltipTrigger>
-                <TooltipContent>
-                  Based on 15+ weather data points
-                </TooltipContent>
-              </Tooltip>
-            </h2>
+            <div className="flex items-center justify-between">
+              <h2 className="font-heading font-bold text-xl flex items-center gap-2">
+                Recommended Layers
+                <Tooltip>
+                  <TooltipTrigger>
+                    <Info className="h-4 w-4 text-muted-foreground cursor-help" />
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    Based on 15+ weather data points
+                  </TooltipContent>
+                </Tooltip>
+              </h2>
+
+              <Dialog>
+                <DialogTrigger asChild>
+                  <Button variant="outline" size="sm">
+                    <Plus className="h-4 w-4 mr-2" />
+                    Add Item
+                  </Button>
+                </DialogTrigger>
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>Add from Gear Closet</DialogTitle>
+                  </DialogHeader>
+                  <div className="grid gap-4 py-4 max-h-[60vh] overflow-y-auto">
+                    {GEAR_CLOSET.map((item) => (
+                      <div key={item.id} className="flex items-center space-x-2 p-2 rounded hover:bg-secondary/20">
+                        <Checkbox 
+                          id={`add-${item.id}`} 
+                          checked={!!selectedItems.find(i => i.id === item.id)}
+                          onCheckedChange={() => handleToggleItem(item)}
+                        />
+                        <label
+                          htmlFor={`add-${item.id}`}
+                          className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 flex-1 cursor-pointer"
+                        >
+                          {item.name}
+                        </label>
+                        <span className="text-xs text-muted-foreground">{item.category}</span>
+                      </div>
+                    ))}
+                  </div>
+                </DialogContent>
+              </Dialog>
+            </div>
 
             <div className="grid gap-4">
-              {outfit.map((layer, idx) => (
-                <motion.div
-                  key={idx}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: idx * 0.1 }}
-                  className="group bg-white rounded-xl border p-4 hover:shadow-md transition-all flex items-center gap-4"
-                >
-                  <div className={`h-12 w-12 rounded-lg flex items-center justify-center ${layer.color}`}>
-                    {layer.icon}
-                  </div>
-                  <div className="flex-1">
-                    <div className="flex justify-between items-start">
-                      <div>
-                        <p className="text-xs text-muted-foreground font-semibold uppercase tracking-wider mb-1">{layer.zone}</p>
-                        <h3 className="font-bold text-lg text-primary">{layer.item}</h3>
+              <AnimatePresence>
+                {INITIAL_RECOMMENDATION.map((rec, idx) => {
+                  const isSelected = !!selectedItems.find(i => i.id === rec.id);
+                  
+                  return (
+                    <motion.div
+                      key={rec.id}
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className={`group rounded-xl border p-4 hover:shadow-md transition-all flex items-center gap-4 ${isSelected ? 'bg-white border-primary/20' : 'bg-gray-50 opacity-60 border-transparent'}`}
+                    >
+                      <Checkbox 
+                        checked={isSelected}
+                        onCheckedChange={() => handleToggleItem(rec)}
+                        className="h-6 w-6"
+                      />
+                      
+                      <div className="h-12 w-12 rounded-lg flex items-center justify-center bg-secondary/50 text-primary">
+                        {rec.category === "Torso" ? <Shirt className="h-6 w-6" /> : <User className="h-6 w-6" />}
                       </div>
-                      <div className="bg-secondary/30 px-2 py-1 rounded text-xs text-muted-foreground">
-                        98% Confidence
+                      
+                      <div className="flex-1">
+                        <div className="flex justify-between items-start">
+                          <div>
+                            <p className="text-xs text-muted-foreground font-semibold uppercase tracking-wider mb-1">{rec.category} {rec.layerType ? `(${rec.layerType})` : ''}</p>
+                            <h3 className="font-bold text-lg text-primary">{rec.name}</h3>
+                          </div>
+                          <div className="bg-secondary/30 px-2 py-1 rounded text-xs text-muted-foreground">
+                            98% Confidence
+                          </div>
+                        </div>
+                        <p className="text-sm text-muted-foreground mt-1 flex items-center gap-1">
+                          <Info className="h-3 w-3" />
+                          {rec.reason}
+                        </p>
                       </div>
-                    </div>
-                    <p className="text-sm text-muted-foreground mt-1 flex items-center gap-1">
-                      <Info className="h-3 w-3" />
-                      {layer.reason}
-                    </p>
-                  </div>
-                </motion.div>
-              ))}
+                    </motion.div>
+                  );
+                })}
+
+                {/* Show added items that weren't in initial recommendation */}
+                {selectedItems.filter(i => !INITIAL_RECOMMENDATION.find(r => r.id === i.id)).map((item) => (
+                   <motion.div
+                   key={item.id}
+                   initial={{ opacity: 0, height: 0 }}
+                   animate={{ opacity: 1, height: 'auto' }}
+                   exit={{ opacity: 0, height: 0 }}
+                   className="group bg-white rounded-xl border border-primary/20 p-4 hover:shadow-md transition-all flex items-center gap-4"
+                 >
+                   <Checkbox 
+                     checked={true}
+                     onCheckedChange={() => handleToggleItem(item)}
+                     className="h-6 w-6"
+                   />
+                   
+                   <div className="h-12 w-12 rounded-lg flex items-center justify-center bg-accent/10 text-accent">
+                     <Plus className="h-6 w-6" />
+                   </div>
+                   
+                   <div className="flex-1">
+                     <div>
+                       <p className="text-xs text-muted-foreground font-semibold uppercase tracking-wider mb-1">{item.category}</p>
+                       <h3 className="font-bold text-lg text-primary">{item.name}</h3>
+                     </div>
+                   </div>
+                 </motion.div>
+                ))}
+              </AnimatePresence>
             </div>
           </div>
         </div>
@@ -190,15 +262,6 @@ export default function Recommendation() {
                 </AccordionContent>
               </AccordionItem>
             </Accordion>
-
-            <div className="mt-6 pt-6 border-t border-dashed border-border">
-              <p className="text-xs text-muted-foreground text-center mb-4">
-                Not what you have in your closet?
-              </p>
-              <Button variant="outline" className="w-full">
-                See Alternatives
-              </Button>
-            </div>
           </div>
         </div>
 
