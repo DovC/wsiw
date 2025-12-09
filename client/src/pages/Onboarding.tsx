@@ -18,6 +18,7 @@ export default function Onboarding() {
     activity: "run",
     location: "",
     time: "now",
+    duration: "1-2 hours",
     sensitivity: 50, // 0 = runs cold, 100 = runs hot
   });
 
@@ -119,7 +120,7 @@ export default function Onboarding() {
               >
                 <div className="space-y-2">
                   <h2 className="text-3xl font-heading font-bold text-primary">Where & When?</h2>
-                  <p className="text-muted-foreground">We need this to fetch the hyper-local forecast.</p>
+                  <p className="text-muted-foreground">We need this to hyper-personalize your recommendations.</p>
                 </div>
 
                 <div className="space-y-6">
@@ -137,43 +138,79 @@ export default function Onboarding() {
                     </div>
                   </div>
 
+                  {/* Time Slider */}
                   <div className="space-y-6">
                     <div className="flex justify-between items-center">
                       <Label className="text-base">Time</Label>
                       <span className="text-sm font-bold text-primary bg-primary/10 px-3 py-1 rounded-full">
                         {formData.time === "now" ? "Starting Now" : 
-                         formData.time === "after_8pm" ? "After 8 PM" : 
-                         `Starting in ${formData.time}`}
+                         formData.time === "12pm-4pm" ? "12 PM - 4 PM" :
+                         formData.time === "4pm-8pm" ? "4 PM - 8 PM" :
+                         "After 8 PM"}
                       </span>
                     </div>
                     
                     <div className="pt-2 pb-2">
                       <Slider
                         defaultValue={[0]}
-                        max={4}
+                        max={3}
                         step={1}
                         value={[
                           formData.time === "now" ? 0 : 
-                          formData.time === "2 hours" ? 1 :
-                          formData.time === "4 hours" ? 2 :
-                          formData.time === "6 hours" ? 3 : 4
+                          formData.time === "12pm-4pm" ? 1 :
+                          formData.time === "4pm-8pm" ? 2 : 3
                         ]}
                         onValueChange={(val) => {
                           const v = val[0];
                           if (v === 0) updateData("time", "now");
-                          else if (v === 1) updateData("time", "2 hours");
-                          else if (v === 2) updateData("time", "4 hours");
-                          else if (v === 3) updateData("time", "6 hours");
-                          else if (v === 4) updateData("time", "after_8pm");
+                          else if (v === 1) updateData("time", "12pm-4pm");
+                          else if (v === 2) updateData("time", "4pm-8pm");
+                          else if (v === 3) updateData("time", "after_8pm");
                         }}
                         className="cursor-pointer"
                       />
                       <div className="flex justify-between mt-3 text-xs text-muted-foreground font-medium px-1">
                         <span>Now</span>
-                        <span>+2h</span>
-                        <span>+4h</span>
-                        <span>+6h</span>
+                        <span>12-4pm</span>
+                        <span>4-8pm</span>
                         <span>&gt; 8pm</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Duration Slider */}
+                  <div className="space-y-6">
+                    <div className="flex justify-between items-center">
+                      <Label className="text-base">Duration</Label>
+                      <span className="text-sm font-bold text-primary bg-primary/10 px-3 py-1 rounded-full">
+                        {formData.duration}
+                      </span>
+                    </div>
+                    
+                    <div className="pt-2 pb-2">
+                      <Slider
+                        defaultValue={[1]}
+                        max={3}
+                        step={1}
+                        value={[
+                          formData.duration === "< 1 hour" ? 0 : 
+                          formData.duration === "1-2 hours" ? 1 :
+                          formData.duration === "2-4 hours" ? 2 : 3
+                        ]}
+                        onValueChange={(val) => {
+                          const v = val[0];
+                          if (v === 0) updateData("duration", "< 1 hour");
+                          else if (v === 1) updateData("duration", "1-2 hours");
+                          else if (v === 2) updateData("duration", "2-4 hours");
+                          else if (v === 3) updateData("duration", "> 4 hours");
+                        }}
+                        className="cursor-pointer"
+                      />
+                      <div className="flex justify-between mt-3 text-xs text-muted-foreground font-medium px-1">
+                        <span>&lt; 1h</span>
+                        <span>1-2h</span>
+                        <span>2-4h</span>
+                        <span>&gt; 4h</span>
                       </div>
                     </div>
                   </div>
