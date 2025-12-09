@@ -9,36 +9,37 @@ export type GearItem = {
   brand?: string;
   color?: string;
   iconName?: string;
+  sports?: ("Run" | "Cycle")[];
 };
 
 export const GEAR_CLOSET: GearItem[] = [
   // HEAD
-  { id: "h1", name: "Baseball Hat", category: "Head", warmthRating: 2, brand: "Nike", color: "Black" },
-  { id: "h2", name: "Beanie", category: "Head", warmthRating: 7, brand: "North Face", color: "Grey" },
-  { id: "h3", name: "Buff/Headband", category: "Head", warmthRating: 4, brand: "Buff", color: "Blue" },
+  { id: "h1", name: "Baseball Hat", category: "Head", warmthRating: 2, brand: "Nike", color: "Black", sports: ["Run"] },
+  { id: "h2", name: "Beanie", category: "Head", warmthRating: 7, brand: "North Face", color: "Grey", sports: ["Run", "Cycle"] },
+  { id: "h3", name: "Buff/Headband", category: "Head", warmthRating: 4, brand: "Buff", color: "Blue", sports: ["Run", "Cycle"] },
 
   // TORSO
-  { id: "t1", name: "Merino Wool Long Sleeve", category: "Torso", layerType: "Base", warmthRating: 6, brand: "Smartwool", color: "Navy" },
-  { id: "t2", name: "Lightweight Windbreaker", category: "Torso", layerType: "Outer", warmthRating: 4, brand: "Patagonia", color: "Orange" },
-  { id: "t3", name: "Tech T-Shirt", category: "Torso", layerType: "Base", warmthRating: 2, brand: "Adidas", color: "White" },
-  { id: "t4", name: "Fleece Midlayer", category: "Torso", layerType: "Mid", warmthRating: 7, brand: "Arc'teryx", color: "Black" },
-  { id: "t5", name: "Insulated Vest", category: "Torso", layerType: "Mid", warmthRating: 6, brand: "North Face", color: "Red" },
-  { id: "t6", name: "Rain Shell", category: "Torso", layerType: "Outer", warmthRating: 5, brand: "Gore-Tex", color: "Yellow" },
+  { id: "t1", name: "Merino Wool Long Sleeve", category: "Torso", layerType: "Base", warmthRating: 6, brand: "Smartwool", color: "Navy", sports: ["Run", "Cycle"] },
+  { id: "t2", name: "Lightweight Windbreaker", category: "Torso", layerType: "Outer", warmthRating: 4, brand: "Patagonia", color: "Orange", sports: ["Run"] },
+  { id: "t3", name: "Tech T-Shirt", category: "Torso", layerType: "Base", warmthRating: 2, brand: "Adidas", color: "White", sports: ["Run"] },
+  { id: "t4", name: "Fleece Midlayer", category: "Torso", layerType: "Mid", warmthRating: 7, brand: "Arc'teryx", color: "Black", sports: ["Run", "Cycle"] },
+  { id: "t5", name: "Insulated Vest", category: "Torso", layerType: "Mid", warmthRating: 6, brand: "North Face", color: "Red", sports: ["Run", "Cycle"] },
+  { id: "t6", name: "Rain Shell", category: "Torso", layerType: "Outer", warmthRating: 5, brand: "Gore-Tex", color: "Yellow", sports: ["Run", "Cycle"] },
 
   // LEGS
-  { id: "l1", name: "Thermal Tights", category: "Legs", warmthRating: 8, brand: "Under Armour", color: "Black" },
-  { id: "l2", name: "3/4 Length Tights", category: "Legs", warmthRating: 5, brand: "Nike", color: "Grey" },
-  { id: "l3", name: "Running Shorts", category: "Legs", warmthRating: 1, brand: "Lululemon", color: "Blue" },
-  { id: "l4", name: "Track Pants", category: "Legs", warmthRating: 6, brand: "Adidas", color: "Black" },
+  { id: "l1", name: "Thermal Tights", category: "Legs", warmthRating: 8, brand: "Under Armour", color: "Black", sports: ["Run"] },
+  { id: "l2", name: "3/4 Length Tights", category: "Legs", warmthRating: 5, brand: "Nike", color: "Grey", sports: ["Run"] },
+  { id: "l3", name: "Running Shorts", category: "Legs", warmthRating: 1, brand: "Lululemon", color: "Blue", sports: ["Run"] },
+  { id: "l4", name: "Track Pants", category: "Legs", warmthRating: 6, brand: "Adidas", color: "Black", sports: ["Run"] },
 
   // FEET
-  { id: "f1", name: "Ankle Socks", category: "Feet", warmthRating: 2, brand: "Balega", color: "White" },
-  { id: "f2", name: "Wool Socks", category: "Feet", warmthRating: 7, brand: "Darn Tough", color: "Green" },
-  { id: "f3", name: "Compression Socks", category: "Feet", warmthRating: 3, brand: "CEP", color: "Black" },
+  { id: "f1", name: "Ankle Socks", category: "Feet", warmthRating: 2, brand: "Balega", color: "White", sports: ["Run"] },
+  { id: "f2", name: "Wool Socks", category: "Feet", warmthRating: 7, brand: "Darn Tough", color: "Green", sports: ["Run", "Cycle"] },
+  { id: "f3", name: "Compression Socks", category: "Feet", warmthRating: 3, brand: "CEP", color: "Black", sports: ["Run"] },
 
   // HANDS
-  { id: "ha1", name: "Light Gloves", category: "Hands", warmthRating: 4, brand: "Nike", color: "Black" },
-  { id: "ha2", name: "Heavy Mittens", category: "Hands", warmthRating: 9, brand: "Black Diamond", color: "Grey" },
+  { id: "ha1", name: "Light Gloves", category: "Hands", warmthRating: 4, brand: "Nike", color: "Black", sports: ["Run", "Cycle"] },
+  { id: "ha2", name: "Heavy Mittens", category: "Hands", warmthRating: 9, brand: "Black Diamond", color: "Grey", sports: ["Run", "Cycle"] },
 ];
 
 export const INITIAL_RECOMMENDATION = [

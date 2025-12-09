@@ -26,7 +26,10 @@ import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { GEAR_CLOSET, GearItem } from "@/lib/data";
 
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+
 const CATEGORIES = ["Head", "Torso", "Legs", "Feet", "Hands"] as const;
+const SPORTS = ["Run", "Cycle"] as const;
 
 // Helper to get icon for category
 const getCategoryIcon = (category: string) => {
@@ -54,7 +57,8 @@ export default function GearCloset() {
     category: "Torso",
     brand: "",
     color: "",
-    warmthRating: 5
+    warmthRating: 5,
+    sports: ["Run"]
   });
 
   useEffect(() => {
@@ -85,7 +89,8 @@ export default function GearCloset() {
         category: "Torso",
         brand: "",
         color: "",
-        warmthRating: 5
+        warmthRating: 5,
+        sports: ["Run"]
       });
     }
     setIsDialogOpen(true);
@@ -203,11 +208,20 @@ export default function GearCloset() {
                         <div className="flex-1 grid md:grid-cols-4 gap-4 items-center">
                           <div className="md:col-span-2">
                             <h3 className="font-bold text-primary">{item.name}</h3>
-                            {item.layerType && (
-                              <span className="text-xs text-muted-foreground uppercase tracking-wider font-semibold">
-                                {item.layerType} Layer
-                              </span>
-                            )}
+                            <div className="flex gap-2 items-center mt-1">
+                              {item.layerType && (
+                                <span className="text-xs text-muted-foreground uppercase tracking-wider font-semibold">
+                                  {item.layerType} Layer
+                                </span>
+                              )}
+                              <div className="flex gap-1">
+                                {item.sports?.map(sport => (
+                                  <span key={sport} className="text-[10px] px-1.5 py-0.5 bg-accent/10 text-accent rounded-sm font-medium">
+                                    {sport}
+                                  </span>
+                                ))}
+                              </div>
+                            </div>
                           </div>
                           
                           <div className="text-sm text-muted-foreground">
@@ -295,6 +309,23 @@ export default function GearCloset() {
                   </SelectContent>
                 </Select>
               </div>
+            </div>
+
+            <div className="space-y-2">
+              <Label>Sports</Label>
+              <ToggleGroup 
+                type="multiple" 
+                variant="outline"
+                value={formData.sports || []}
+                onValueChange={(val) => setFormData({...formData, sports: val as any[]})}
+                className="justify-start"
+              >
+                {SPORTS.map(sport => (
+                  <ToggleGroupItem key={sport} value={sport} aria-label={sport}>
+                    {sport}
+                  </ToggleGroupItem>
+                ))}
+              </ToggleGroup>
             </div>
 
             <div className="space-y-2">
