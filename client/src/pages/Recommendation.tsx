@@ -17,12 +17,13 @@ import {
   TooltipContent, 
   TooltipTrigger 
 } from "@/components/ui/tooltip";
-import {
+import { 
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
+  DialogFooter,
 } from "@/components/ui/dialog";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useToast } from "@/hooks/use-toast";
@@ -31,6 +32,7 @@ import { INITIAL_RECOMMENDATION, GEAR_CLOSET, GearItem } from "@/lib/data";
 export default function Recommendation() {
   const [_, setLocation] = useLocation();
   const [selectedItems, setSelectedItems] = useState<GearItem[]>([]);
+  const [showSuccessDialog, setShowSuccessDialog] = useState(false);
   const { toast } = useToast();
   
   // Initialize with recommendation
@@ -56,11 +58,25 @@ export default function Recommendation() {
   };
 
   const handleSave = () => {
-    localStorage.setItem("savedOutfit", JSON.stringify(selectedItems));
-    toast({
-      title: "Outfit Saved",
-      description: "Your selection has been saved for later.",
-    });
+    // Construct the workout object
+    const newWorkout = {
+      id: `w-${Date.now()}`,
+      date: "Today, 2:00 PM",
+      location: "Central Park, NY",
+      duration: "1h 30m",
+      temp: `${weather.temp}°F`,
+      condition: weather.condition,
+      status: "pending_feedback",
+      items: selectedItems
+    };
+
+    // Save to localStorage
+    const saved = localStorage.getItem("savedWorkouts");
+    const workouts = saved ? JSON.parse(saved) : [];
+    localStorage.setItem("savedWorkouts", JSON.stringify([newWorkout, ...workouts]));
+
+    // Show dialog
+    setShowSuccessDialog(true);
   };
 
   const handleLogRun = () => {
@@ -70,6 +86,32 @@ export default function Recommendation() {
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-5xl">
+      {/* Success Dialog */}
+      <Dialog open={showSuccessDialog} onOpenChange={setShowSuccessDialog}>
+        <DialogContent className="sm:max-w-md text-center">
+          <div className="flex justify-center mb-4">
+            <div className="h-16 w-16 bg-green-100 rounded-full flex items-center justify-center animate-in zoom-in duration-300">
+              <Check className="h-8 w-8 text-green-600" />
+            </div>
+          </div>
+          <DialogHeader>
+            <DialogTitle className="text-center text-2xl font-bold font-heading">Great! You're all set!</DialogTitle>
+          </DialogHeader>
+          <div className="text-muted-foreground my-2 text-lg leading-relaxed">
+            Don't forget to enter your feedback post-workout so that you get more personalized recommendations in the future.
+          </div>
+          <DialogFooter className="sm:justify-center mt-4">
+            <Button 
+              size="lg"
+              className="w-full sm:w-auto min-w-[150px] font-bold" 
+              onClick={() => setLocation("/workouts")}
+            >
+              Got It!
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
       {/* Header Context */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
         <div>

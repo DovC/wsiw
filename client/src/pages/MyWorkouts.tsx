@@ -1,4 +1,5 @@
 import { Link } from "wouter";
+import { useState, useEffect } from "react";
 import { 
   Calendar, Clock, MapPin, ArrowRight, ThumbsUp, ThumbsDown, 
   Wind, Thermometer, AlertCircle, CheckCircle2 
@@ -89,6 +90,18 @@ const WORKOUTS = [
 ];
 
 export default function MyWorkouts() {
+  const [workouts, setWorkouts] = useState<any[]>(WORKOUTS);
+
+  useEffect(() => {
+    const saved = localStorage.getItem("savedWorkouts");
+    if (saved) {
+      const savedWorkouts = JSON.parse(saved);
+      // Combine saved workouts with mock data
+      // Using a Map to avoid duplicates if IDs conflict (though they shouldn't with timestamp)
+      setWorkouts([...savedWorkouts, ...WORKOUTS]);
+    }
+  }, []);
+
   return (
     <div className="container mx-auto px-4 py-8 max-w-4xl">
       <div className="flex items-center justify-between mb-8">
@@ -104,7 +117,7 @@ export default function MyWorkouts() {
       </div>
 
       <div className="space-y-6">
-        {WORKOUTS.map((workout) => (
+        {workouts.map((workout) => (
           <Card key={workout.id} className="overflow-hidden border-none shadow-md bg-white hover:shadow-lg transition-shadow">
             <div className="flex flex-col md:flex-row">
               {/* Left: Meta Data */}
@@ -153,11 +166,11 @@ export default function MyWorkouts() {
                   </div>
 
                   <div className="flex flex-wrap gap-2 mb-6">
-                    {workout.items.map((item) => {
+                    {workout.items.map((item: any) => {
                       if (!item) return null;
                       
                       // Check if this item had specific feedback
-                      const issue = workout.feedback?.adjustments?.find(a => a.itemId === item.id)?.issue;
+                      const issue = workout.feedback?.adjustments?.find((a: any) => a.itemId === item.id)?.issue;
                       
                       return (
                         <div key={item.id} className={`
