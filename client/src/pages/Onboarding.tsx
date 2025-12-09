@@ -137,45 +137,45 @@ export default function Onboarding() {
                     </div>
                   </div>
 
-                  <div className="space-y-2">
-                    <Label className="text-base">Time</Label>
-                    <RadioGroup 
-                      defaultValue="now" 
-                      value={formData.time}
-                      onValueChange={(val) => updateData("time", val)}
-                      className="grid grid-cols-3 gap-4"
-                    >
-                      <div>
-                        <RadioGroupItem value="now" id="now" className="peer sr-only" />
-                        <Label
-                          htmlFor="now"
-                          className="flex flex-col items-center justify-between rounded-xl border-2 border-muted bg-transparent p-4 hover:bg-accent/5 hover:text-accent-foreground peer-data-[state=checked]:border-primary peer-data-[state=checked]:text-primary cursor-pointer transition-all"
-                        >
-                          <Clock className="mb-2 h-6 w-6" />
-                          Now
-                        </Label>
+                  <div className="space-y-6">
+                    <div className="flex justify-between items-center">
+                      <Label className="text-base">Time</Label>
+                      <span className="text-sm font-bold text-primary bg-primary/10 px-3 py-1 rounded-full">
+                        {formData.time === "now" ? "Starting Now" : 
+                         formData.time === "after_8pm" ? "After 8 PM" : 
+                         `Starting in ${formData.time}`}
+                      </span>
+                    </div>
+                    
+                    <div className="pt-2 pb-2">
+                      <Slider
+                        defaultValue={[0]}
+                        max={4}
+                        step={1}
+                        value={[
+                          formData.time === "now" ? 0 : 
+                          formData.time === "2 hours" ? 1 :
+                          formData.time === "4 hours" ? 2 :
+                          formData.time === "6 hours" ? 3 : 4
+                        ]}
+                        onValueChange={(val) => {
+                          const v = val[0];
+                          if (v === 0) updateData("time", "now");
+                          else if (v === 1) updateData("time", "2 hours");
+                          else if (v === 2) updateData("time", "4 hours");
+                          else if (v === 3) updateData("time", "6 hours");
+                          else if (v === 4) updateData("time", "after_8pm");
+                        }}
+                        className="cursor-pointer"
+                      />
+                      <div className="flex justify-between mt-3 text-xs text-muted-foreground font-medium px-1">
+                        <span>Now</span>
+                        <span>+2h</span>
+                        <span>+4h</span>
+                        <span>+6h</span>
+                        <span>&gt; 8pm</span>
                       </div>
-                      <div>
-                        <RadioGroupItem value="morning" id="morning" className="peer sr-only" />
-                        <Label
-                          htmlFor="morning"
-                          className="flex flex-col items-center justify-between rounded-xl border-2 border-muted bg-transparent p-4 hover:bg-accent/5 hover:text-accent-foreground peer-data-[state=checked]:border-primary peer-data-[state=checked]:text-primary cursor-pointer transition-all"
-                        >
-                          <Sun className="mb-2 h-6 w-6" />
-                          Morning
-                        </Label>
-                      </div>
-                      <div>
-                        <RadioGroupItem value="evening" id="evening" className="peer sr-only" />
-                        <Label
-                          htmlFor="evening"
-                          className="flex flex-col items-center justify-between rounded-xl border-2 border-muted bg-transparent p-4 hover:bg-accent/5 hover:text-accent-foreground peer-data-[state=checked]:border-primary peer-data-[state=checked]:text-primary cursor-pointer transition-all"
-                        >
-                          <CloudRain className="mb-2 h-6 w-6" />
-                          Evening
-                        </Label>
-                      </div>
-                    </RadioGroup>
+                    </div>
                   </div>
                 </div>
 
