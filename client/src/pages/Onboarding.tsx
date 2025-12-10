@@ -1,13 +1,18 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useLocation } from "wouter";
+import { format, addDays } from "date-fns";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Slider } from "@/components/ui/slider";
-import { Bike, Footprints, MapPin, Clock, ArrowRight, ArrowLeft, Check, Sun, CloudRain } from "lucide-react";
+import { Calendar } from "@/components/ui/calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Bike, Footprints, MapPin, Clock, ArrowRight, ArrowLeft, Check, Sun, CloudRain, Calendar as CalendarIcon, Lock } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 export default function Onboarding() {
   const [step, setStep] = useState(1);
@@ -17,8 +22,10 @@ export default function Onboarding() {
   const [formData, setFormData] = useState({
     activity: "run",
     location: "",
+    date: new Date(),
     time: "now",
     duration: "1-2 hours",
+    workoutType: "easy",
     sensitivity: 50, // 0 = runs cold, 100 = runs hot
   });
 
@@ -131,26 +138,82 @@ export default function Onboarding() {
                       <Input 
                         id="location"
                         placeholder="e.g. Central Park, NY" 
-                        className="pl-10 h-12 text-lg"
+                        className="pl-10 h-10 text-base"
                         value={formData.location}
                         onChange={(e) => updateData("location", e.target.value)}
                       />
                     </div>
                   </div>
 
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label className="text-base">Date</Label>
+                      <Popover>
+                        <PopoverTrigger asChild>
+                          <Button
+                            variant={"outline"}
+                            className={cn(
+                              "w-full h-10 pl-3 text-left font-normal",
+                              !formData.date && "text-muted-foreground"
+                            )}
+                          >
+                            {formData.date ? (
+                              format(formData.date, "MMM d")
+                            ) : (
+                              <span>Pick a date</span>
+                            )}
+                            <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                          </Button>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-auto p-0" align="start">
+                          <Calendar
+                            mode="single"
+                            selected={formData.date}
+                            onSelect={(date) => date && updateData("date", date)}
+                            disabled={(date) =>
+                              date < new Date(new Date().setHours(0, 0, 0, 0)) ||
+                              date > addDays(new Date(), 14)
+                            }
+                            initialFocus
+                          />
+                        </PopoverContent>
+                      </Popover>
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label className="text-base">Workout Type</Label>
+                      <Select 
+                        value={formData.workoutType} 
+                        onValueChange={(val) => updateData("workoutType", val)}
+                      >
+                        <SelectTrigger className="h-10">
+                          <SelectValue placeholder="Select type" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="easy">Easy Run</SelectItem>
+                          <SelectItem value="workout">Workout</SelectItem>
+                          <SelectItem value="race" disabled className="flex items-center justify-between w-full opacity-50 cursor-not-allowed">
+                            <span>Race</span>
+                            <Lock className="h-3 w-3 ml-2" />
+                          </SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  </div>
+
                   {/* Time Slider */}
-                  <div className="space-y-6">
+                  <div className="space-y-4">
                     <div className="flex justify-between items-center">
                       <Label className="text-base">Time</Label>
-                      <span className="text-sm font-bold text-primary bg-primary/10 px-3 py-1 rounded-full">
-                        {formData.time === "now" ? "Starting Now" : 
-                         formData.time === "12pm-4pm" ? "12 PM - 4 PM" :
-                         formData.time === "4pm-8pm" ? "4 PM - 8 PM" :
-                         "After 8 PM"}
+                      <span className="text-xs font-bold text-primary bg-primary/10 px-2 py-0.5 rounded-full">
+                        {formData.time === "now" ? "Now" : 
+                         formData.time === "12pm-4pm" ? "12-4pm" :
+                         formData.time === "4pm-8pm" ? "4-8pm" :
+                         "> 8pm"}
                       </span>
                     </div>
                     
-                    <div className="pt-2 pb-2">
+                    <div className="pt-2">
                       <Slider
                         defaultValue={[0]}
                         max={3}
@@ -169,7 +232,7 @@ export default function Onboarding() {
                         }}
                         className="cursor-pointer"
                       />
-                      <div className="flex justify-between mt-3 text-xs text-muted-foreground font-medium px-1">
+                      <div className="flex justify-between mt-2 text-[10px] text-muted-foreground font-medium px-1">
                         <span>Now</span>
                         <span>12-4pm</span>
                         <span>4-8pm</span>
@@ -179,15 +242,15 @@ export default function Onboarding() {
                   </div>
 
                   {/* Duration Slider */}
-                  <div className="space-y-6">
+                  <div className="space-y-4">
                     <div className="flex justify-between items-center">
                       <Label className="text-base">Duration</Label>
-                      <span className="text-sm font-bold text-primary bg-primary/10 px-3 py-1 rounded-full">
+                      <span className="text-xs font-bold text-primary bg-primary/10 px-2 py-0.5 rounded-full">
                         {formData.duration}
                       </span>
                     </div>
                     
-                    <div className="pt-2 pb-2">
+                    <div className="pt-2">
                       <Slider
                         defaultValue={[1]}
                         max={3}
@@ -206,7 +269,7 @@ export default function Onboarding() {
                         }}
                         className="cursor-pointer"
                       />
-                      <div className="flex justify-between mt-3 text-xs text-muted-foreground font-medium px-1">
+                      <div className="flex justify-between mt-2 text-[10px] text-muted-foreground font-medium px-1">
                         <span>&lt; 1h</span>
                         <span>1-2h</span>
                         <span>2-4h</span>
