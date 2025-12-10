@@ -2,12 +2,14 @@ import { useState } from "react";
 import { useLocation } from "wouter";
 import { 
   User, Settings, LogOut, Trash2, AlertTriangle, 
-  MapPin, Bell, Shield, CircleUser
+  MapPin, Bell, Shield, CircleUser, Lock
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -63,21 +65,86 @@ export default function UserProfile() {
               Personal Details
             </CardTitle>
           </CardHeader>
-          <CardContent className="space-y-4">
+          <CardContent className="space-y-6">
             <div className="grid md:grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label>Default Location</Label>
-                <div className="flex items-center gap-2 p-3 border rounded-md bg-secondary/10 text-muted-foreground">
-                  <MapPin className="h-4 w-4" />
-                  Central Park, NY
-                </div>
+                <Label htmlFor="firstName">First Name</Label>
+                <Input id="firstName" placeholder="First Name" />
               </div>
               <div className="space-y-2">
-                <Label>Running Level</Label>
-                <div className="p-3 border rounded-md bg-secondary/10 text-muted-foreground">
-                  Intermediate
+                <Label htmlFor="lastName">Last Name</Label>
+                <Input id="lastName" placeholder="Last Name" />
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="email">Email</Label>
+              <Input id="email" type="email" placeholder="runner@example.com" />
+            </div>
+
+            <div className="grid md:grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label>Date of Birth</Label>
+                <div className="grid grid-cols-2 gap-2">
+                  <Select>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Month" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {Array.from({ length: 12 }, (_, i) => (
+                        <SelectItem key={i} value={`${i + 1}`}>
+                          {new Date(0, i).toLocaleString('default', { month: 'long' })}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <Select>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Year" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {Array.from({ length: 100 }, (_, i) => (
+                        <SelectItem key={i} value={`${new Date().getFullYear() - i}`}>
+                          {new Date().getFullYear() - i}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </div>
               </div>
+
+              <div className="space-y-2">
+                <Label>Gender</Label>
+                <Select>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select Gender" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="female">Female</SelectItem>
+                    <SelectItem value="male">Male</SelectItem>
+                    <SelectItem value="non-binary">Non-binary</SelectItem>
+                    <SelectItem value="prefer-not-to-say">Prefer not to say</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+
+            <div className="grid md:grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="height">Height (cm)</Label>
+                <Input id="height" type="number" placeholder="175" />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="weight">Weight (kg)</Label>
+                <Input id="weight" type="number" placeholder="70" />
+              </div>
+            </div>
+
+            <div className="pt-2">
+               <Button variant="link" className="px-0 text-primary h-auto font-medium">
+                 <Lock className="h-4 w-4 mr-2" />
+                 Change Password
+               </Button>
             </div>
           </CardContent>
         </Card>
