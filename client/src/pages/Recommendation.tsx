@@ -281,41 +281,43 @@ export default function Recommendation() {
         </div>
 
         {/* RIGHT COLUMN: Why this outfit? */}
-        <div className="lg:col-span-4 space-y-6">
-          <div className="bg-secondary/30 rounded-2xl p-6 border border-border/50 sticky top-24">
-            <h3 className="font-heading font-bold text-lg mb-4">Why this gear?</h3>
-            
-            <Accordion type="single" collapsible className="w-full">
-              <AccordionItem value="item-1" className="border-b-0">
-                <AccordionTrigger className="hover:no-underline py-3">
-                  <div className="flex items-center gap-2 text-sm font-semibold">
-                    <Wind className="h-4 w-4 text-accent" />
-                    Wind Factor
-                  </div>
-                </AccordionTrigger>
-                <AccordionContent className="text-muted-foreground text-sm">
-                  Wind speeds of 11 mph significantly lower skin temperature. A windbreaker shell is essential to trap body heat.
-                </AccordionContent>
-              </AccordionItem>
+        <div className="lg:col-span-4">
+          <div className="sticky top-24 space-y-6">
+            <div className="bg-secondary/30 rounded-2xl p-6 border border-border/50">
+              <h3 className="font-heading font-bold text-lg mb-4">Why this gear?</h3>
               
-              <AccordionItem value="item-2" className="border-b-0">
-                <AccordionTrigger className="hover:no-underline py-3">
-                  <div className="flex items-center gap-2 text-sm font-semibold">
-                    <Thermometer className="h-4 w-4 text-blue-500" />
-                    Temp vs. Effort
-                  </div>
-                </AccordionTrigger>
-                <AccordionContent className="text-muted-foreground text-sm">
-                  At 46°F with moderate exertion, you'll generate significant body heat. We recommend lighter layers than you'd wear for walking.
-                </AccordionContent>
-              </AccordionItem>
-            </Accordion>
+              <Accordion type="single" collapsible className="w-full">
+                <AccordionItem value="item-1" className="border-b-0">
+                  <AccordionTrigger className="hover:no-underline py-3">
+                    <div className="flex items-center gap-2 text-sm font-semibold">
+                      <Wind className="h-4 w-4 text-accent" />
+                      Wind Factor
+                    </div>
+                  </AccordionTrigger>
+                  <AccordionContent className="text-muted-foreground text-sm">
+                    Wind speeds of 11 mph significantly lower skin temperature. A windbreaker shell is essential to trap body heat.
+                  </AccordionContent>
+                </AccordionItem>
+                
+                <AccordionItem value="item-2" className="border-b-0">
+                  <AccordionTrigger className="hover:no-underline py-3">
+                    <div className="flex items-center gap-2 text-sm font-semibold">
+                      <Thermometer className="h-4 w-4 text-blue-500" />
+                      Temp vs. Effort
+                    </div>
+                  </AccordionTrigger>
+                  <AccordionContent className="text-muted-foreground text-sm">
+                    At 46°F with moderate exertion, you'll generate significant body heat. We recommend lighter layers than you'd wear for walking.
+                  </AccordionContent>
+                </AccordionItem>
+              </Accordion>
+            </div>
+            
+            <Button className="w-full bg-accent text-white hover:bg-accent/90 h-14 text-lg font-bold shadow-lg shadow-accent/20" onClick={handleSave}>
+              <Save className="h-5 w-5 mr-2" />
+              Let's Go!
+            </Button>
           </div>
-          
-          <Button className="w-full bg-accent text-white hover:bg-accent/90 h-14 text-lg font-bold shadow-lg shadow-accent/20" onClick={handleSave}>
-            <Save className="h-5 w-5 mr-2" />
-            Let's Go!
-          </Button>
         </div>
 
       </div>
