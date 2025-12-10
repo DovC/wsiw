@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
 import { motion } from "framer-motion";
-import { ArrowRight, CloudRain, Sun, Wind, Thermometer, User } from "lucide-react";
+import { ArrowRight, CloudRain, Sun, Wind, Thermometer, User, Shirt } from "lucide-react";
 import heroBg from "@assets/generated_images/subtle_topographic_map_pattern_with_technical_grid_lines.png";
 
 export default function Home() {
@@ -32,13 +32,13 @@ export default function Home() {
                 <span>New: Hyper-local weather data</span>
               </div>
               <h1 className="text-5xl md:text-7xl font-heading font-bold tracking-tight text-primary leading-[1.1] mb-6">
-                Run Smarter. <br/>
+                Workout Smarter. <br/>
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-primary/60">
                   Dress Better.
                 </span>
               </h1>
               <p className="text-xl text-muted-foreground mb-8 leading-relaxed max-w-lg">
-                Stop guessing. Get precision outfit recommendations based on real-time weather and your personal comfort profile.
+                Stop guessing. Get spot-on outfit advice tailored by real-time weather, your personal comfort profile, and your actual gear
               </p>
               
               <div className="flex flex-col sm:flex-row gap-4">
@@ -50,7 +50,7 @@ export default function Home() {
                 </Link>
                 <Link href="/demo">
                   <Button size="lg" variant="outline" className="h-14 px-8 text-lg bg-background/50 backdrop-blur-sm">
-                    View Demo
+                    See How it Works
                   </Button>
                 </Link>
               </div>
@@ -122,7 +122,7 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-4 gap-8">
             {[
               {
                 icon: <Wind className="h-8 w-8 text-primary" />,
@@ -133,6 +133,11 @@ export default function Home() {
                 icon: <Thermometer className="h-8 w-8 text-primary" />,
                 title: "RealFeel Calibration",
                 desc: "Temperature is just a number. We calculate humidity and dew point for true comfort."
+              },
+              {
+                icon: <Shirt className="h-8 w-8 text-primary" />,
+                title: "Personal Gear, Perfect Fit",
+                desc: "Recommendations built around exactly what’s in your closet."
               },
               {
                 icon: <User className="h-8 w-8 text-primary" />,
