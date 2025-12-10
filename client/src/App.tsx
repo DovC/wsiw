@@ -12,6 +12,7 @@ import Feedback from "@/pages/Feedback";
 import GearCloset from "@/pages/GearCloset";
 import MyWorkouts from "@/pages/MyWorkouts";
 import UserProfile from "@/pages/UserProfile";
+import StyleGuide from "@/pages/StyleGuide";
 
 function Router() {
   return (
@@ -24,6 +25,7 @@ function Router() {
         <Route path="/gear-closet" component={GearCloset}/>
         <Route path="/workouts" component={MyWorkouts}/>
         <Route path="/profile" component={UserProfile}/>
+        <Route path="/style-guide" component={StyleGuide}/>
         <Route component={NotFound} />
       </Switch>
     </Layout>

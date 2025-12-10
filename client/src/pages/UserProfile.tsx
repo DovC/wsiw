@@ -144,6 +144,13 @@ export default function UserProfile() {
             </AlertDialog>
           </CardContent>
         </Card>
+
+        {/* Developer Tools */}
+        <div className="text-center pt-8">
+           <a href="/style-guide" className="text-sm text-muted-foreground hover:text-primary underline">
+             View Design System / Style Guide
+           </a>
+        </div>
       </div>
     </div>
   );
