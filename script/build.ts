@@ -1,6 +1,7 @@
 import { build as esbuild } from "esbuild";
 import { build as viteBuild } from "vite";
 import { rm, readFile } from "fs/promises";
+import { execSync } from "child_process";
 
 // server deps to bundle to reduce openat(2) syscalls
 // which helps cold start times
@@ -33,10 +34,16 @@ const allowlist = [
 ];
 
 async function buildAll() {
-  await rm("dist", { recursive: true, force: true });
+  // await rm("dist", { recursive: true, force: true });
 
   console.log("building client...");
-  await viteBuild();
+  // Use CLI to ensure config is loaded correctly and environment is consistent
+  try {
+    execSync("npx vite build", { stdio: "inherit" });
+  } catch (error) {
+    console.error("Vite build failed:", error);
+    process.exit(1);
+  }
 
   /*
   console.log("building server...");
