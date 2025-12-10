@@ -119,10 +119,6 @@ export default function Recommendation() {
           <p className="text-muted-foreground">Central Park • Today, 2:00 PM • 1h 30m</p>
         </div>
         <div className="flex gap-2">
-          <Button variant="outline" size="sm" className="bg-black text-white hover:bg-black/90 hover:text-white border-black" onClick={handleSave}>
-            <Save className="h-4 w-4 mr-2" />
-            Let's Go!
-          </Button>
           <Button size="sm" className="bg-black text-white hover:bg-black/90" onClick={handleLogRun}>
             Log Workout
             <ArrowRight className="h-4 w-4 ml-2" />
@@ -315,6 +311,11 @@ export default function Recommendation() {
               </AccordionItem>
             </Accordion>
           </div>
+          
+          <Button className="w-full bg-accent text-white hover:bg-accent/90 h-14 text-lg font-bold shadow-lg shadow-accent/20" onClick={handleSave}>
+            <Save className="h-5 w-5 mr-2" />
+            Let's Go!
+          </Button>
         </div>
 
       </div>
